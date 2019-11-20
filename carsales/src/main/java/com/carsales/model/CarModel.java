@@ -1,32 +1,46 @@
 package com.carsales.model;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "car_model")
+@Table(name = "car_model", schema = "carsales")
 public class CarModel {
-    private Integer idCarModel;
-    private String carModelName;
+    private int idcarModel;
+    private String modelName;
+    private int idcarManufacture;
+    private Collection<Bill> billsByIdcarModel;
+    private CarManufacture carManufactureByIdcarManufacture;
 
     @Id
-    @Column(name = "idCar_Model", nullable = false)
-    public Integer getIdCarModel() {
-        return idCarModel;
+    @Column(name = "idcar_model", nullable = false, insertable = false,updatable = false)
+    public int getIdcarModel() {
+        return idcarModel;
     }
 
-    public void setIdCarModel(Integer idCarModel) {
-        this.idCarModel = idCarModel;
+    public void setIdcarModel(int idcarModel) {
+        this.idcarModel = idcarModel;
     }
 
     @Basic
-    @Column(name = "Car_Model_name", nullable = false, length = 30)
-    public String getCarModelName() {
-        return carModelName;
+    @Column(name = "model_name", nullable = false, length = 45)
+    public String getModelName() {
+        return modelName;
     }
 
-    public void setCarModelName(String carModelName) {
-        this.carModelName = carModelName;
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    @Basic
+    @Column(name = "idcar_manufacture", nullable = false)
+    public int getIdcarManufacture() {
+        return idcarManufacture;
+    }
+
+    public void setIdcarManufacture(int idcarManufacture) {
+        this.idcarManufacture = idcarManufacture;
     }
 
     @Override
@@ -34,12 +48,32 @@ public class CarModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CarModel carModel = (CarModel) o;
-        return Objects.equals(idCarModel, carModel.idCarModel) &&
-                Objects.equals(carModelName, carModel.carModelName);
+        return idcarModel == carModel.idcarModel &&
+                idcarManufacture == carModel.idcarManufacture &&
+                Objects.equals(modelName, carModel.modelName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idCarModel, carModelName);
+        return Objects.hash(idcarModel, modelName, idcarManufacture);
+    }
+
+    @OneToMany(mappedBy = "carModelByIdmodel")
+    public Collection<Bill> getBillsByIdcarModel() {
+        return billsByIdcarModel;
+    }
+
+    public void setBillsByIdcarModel(Collection<Bill> billsByIdcarModel) {
+        this.billsByIdcarModel = billsByIdcarModel;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "idcar_manufacture", referencedColumnName = "idcar_manufacture", nullable = false, insertable = false,updatable = false)
+    public CarManufacture getCarManufactureByIdcarManufacture() {
+        return carManufactureByIdcarManufacture;
+    }
+
+    public void setCarManufactureByIdcarManufacture(CarManufacture carManufactureByIdcarManufacture) {
+        this.carManufactureByIdcarManufacture = carManufactureByIdcarManufacture;
     }
 }

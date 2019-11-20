@@ -1,18 +1,18 @@
 package com.carsales.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 public class Country {
     private int idcountry;
-    private String countryName;
+    private String countryname;
+    private Collection<Bill> billsByIdcountry;
+    private Collection<City> citiesByIdcountry;
 
     @Id
-    @Column(name = "idcountry", nullable = false)
+    @Column(name = "idcountry", nullable = false, insertable = false,updatable = false)
     public int getIdcountry() {
         return idcountry;
     }
@@ -22,13 +22,13 @@ public class Country {
     }
 
     @Basic
-    @Column(name = "country_name", nullable = false, length = 45)
-    public String getCountryName() {
-        return countryName;
+    @Column(name = "countryname", nullable = false, length = 45)
+    public String getCountryname() {
+        return countryname;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
+    public void setCountryname(String countryname) {
+        this.countryname = countryname;
     }
 
     @Override
@@ -37,11 +37,29 @@ public class Country {
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
         return idcountry == country.idcountry &&
-                Objects.equals(countryName, country.countryName);
+                Objects.equals(countryname, country.countryname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idcountry, countryName);
+        return Objects.hash(idcountry, countryname);
+    }
+
+    @OneToMany(mappedBy = "countryByIdcountry")
+    public Collection<Bill> getBillsByIdcountry() {
+        return billsByIdcountry;
+    }
+
+    public void setBillsByIdcountry(Collection<Bill> billsByIdcountry) {
+        this.billsByIdcountry = billsByIdcountry;
+    }
+
+    @OneToMany(mappedBy = "countryByIdcountry")
+    public Collection<City> getCitiesByIdcountry() {
+        return citiesByIdcountry;
+    }
+
+    public void setCitiesByIdcountry(Collection<City> citiesByIdcountry) {
+        this.citiesByIdcountry = citiesByIdcountry;
     }
 }

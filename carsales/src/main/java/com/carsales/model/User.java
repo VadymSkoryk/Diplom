@@ -1,80 +1,66 @@
 package com.carsales.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
+import java.util.Collection;
+import java.util.Objects;
 
 @Entity
-@Table(name = "user")
-public class User implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long iduser;
-
-    @NotBlank(message = "Name is required")
-    @Column(name = "user_name")
-    private  String name;
-
-    @NotBlank
-    @Size(min=1,max=10, message = "Surname maxLength = 10")
-    @Column(name = "user_surname")
-    private  String surname;
-
-
-    @Size(min=8,message = "password couldnt be shorter then 8 symbols")
-     private String password;
-
-    @Email
-     private  String email;
-
-    @Column(name = "roles_idroles")
-    private int idroles;
-
-    public int getIdroles() {
-        return idroles;
-    }
-
-    public void setIdroles(int idroles) {
-        this.idroles = idroles;
-    }
+public class User {
+    private int iduser;
+    private String username;
+    private String userSurname;
+    private String email;
+    private String password;
+    private int idrole;
+    private Collection<Bill> billsByIduser;
+    private Role roleByIdrole;
 
     public User() {
     }
 
-    public User(@NotBlank(message = "Name is required") String name, @NotBlank @Size(min = 1, max = 10, message = "Surname maxLength = 10") String surname, @Size(min = 8, message = "password couldnt be shorter then 8 symbols") String password, @Email String email) {
-        this.name = name;
-        this.surname = surname;
-        this.password = password;
-        this.email = email;
-    }
-
-    public Long getIduser() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "iduser", nullable = false,insertable=false, updatable=false)
+    public int getIduser() {
         return iduser;
     }
 
-    public void setIduser(Long iduser) {
+    public void setIduser(int iduser) {
         this.iduser = iduser;
     }
 
-    public String getName() {
-        return name;
+    @Basic
+    @Column(name = "username", nullable = false, length = 15)
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getSurname() {
-        return surname;
+    @Basic
+    @Column(name = "user_surname", nullable = false, length = 15)
+    public String getUserSurname() {
+        return userSurname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setUserSurname(String userSurname) {
+        this.userSurname = userSurname;
     }
 
+    @Basic
+    @Column(name = "email", nullable = false, length = 50)
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Basic
+    @Column(name = "password", nullable = false, length = 45)
     public String getPassword() {
         return password;
     }
@@ -83,11 +69,57 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    @PrePersist
+    public void prePersist(){
+        if(idrole==0)
+            idrole=2;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    @Basic
+    @Column(name = "idrole", nullable = false)
+    public int getIdrole() {
+        return idrole;
+    }
+
+    public void setIdrole(int idrole) {
+        this.idrole = 2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return iduser == user.iduser &&
+                idrole == user.idrole &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(userSurname, user.userSurname) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(iduser, username, userSurname, email, password, idrole);
+    }
+
+    @OneToMany(mappedBy = "userByIduser")
+    public Collection<Bill> getBillsByIduser() {
+        return billsByIduser;
+    }
+
+    public void setBillsByIduser(Collection<Bill> billsByIduser) {
+        this.billsByIduser = billsByIduser;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "idrole", referencedColumnName = "idrole", nullable = false, insertable = false,updatable = false)
+    @org.hibernate.annotations.ForeignKey(name = "user_role")
+    public Role getRoleByIdrole() {
+        return roleByIdrole;
+    }
+
+    public void setRoleByIdrole(Role roleByIdrole) {
+        this.roleByIdrole = roleByIdrole;
     }
 }
