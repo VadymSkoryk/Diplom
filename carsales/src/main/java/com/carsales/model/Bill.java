@@ -16,7 +16,7 @@ public class Bill {
     private double vEngine;
     private int distance;
     private int price;
-    private Date year;
+    private int year;
     private int iduser;
     private CarManufacture carManufactureByIdmanufacture;
     private CarModel carModelByIdmodel;
@@ -27,6 +27,7 @@ public class Bill {
     private User userByIduser;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idbill", nullable = false, insertable = false,updatable = false)
     public int getIdbill() {
         return idbill;
@@ -128,11 +129,11 @@ public class Bill {
 
     @Basic
     @Column(name = "year", nullable = false)
-    public Date getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(Date year) {
+    public void setYear(int year) {
         this.year = year;
     }
 

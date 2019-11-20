@@ -1,6 +1,6 @@
 <#assign sf=JspTaglibs["http://www.springframework.org/tags/form"]>
 
-<html>
+<html xmlns:select="http://www.w3.org/1999/html">
 <head>
     <title>Sign up</title>
 </head>
@@ -26,11 +26,15 @@
         <@sf.input path="password"/>
         <@sf.errors path="password"/>
     </div>
-<#--    <div>-->
-<#--        <@sf.label path="idrole">Роль:</@sf.label>-->
-<#--        <@sf.input path="idrole"/>-->
-<#--        <@sf.errors path="idrole"/>-->
-<#--    </div>-->
+
+
+<#--        <@sf.select path="idrole" id="idrole">-->
+<#--            <option value=1>admin</option>-->
+<#--            <option value=2>user</option>-->
+<#--            <option value=3>superuser</option>-->
+<#--        </@sf.select>-->
+
+
 
     <input type="submit">
 </@sf.form>

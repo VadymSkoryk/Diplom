@@ -1190,7 +1190,7 @@
     </column>
     <column id="300" parent="281" name="year">
       <Position>11</Position>
-      <DataType>date|0s</DataType>
+      <DataType>int(4)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>

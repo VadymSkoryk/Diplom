@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class RoleDAO {
+public class RoleDAO   {
 
     @Autowired
     private SessionFactory sessionFactory;
