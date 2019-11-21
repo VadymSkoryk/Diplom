@@ -57,6 +57,12 @@ public class Bill {
         this.idmodel = idmodel;
     }
 
+    @PrePersist
+    public void PrePersist(){
+        if(idcountry==0)
+            idcountry=1;
+    }
+
     @Basic
     @Column(name = "idcountry", nullable = false, insertable = false,updatable = false)
     public int getIdcountry() {
@@ -64,7 +70,7 @@ public class Bill {
     }
 
     public void setIdcountry(int idcountry) {
-        this.idcountry = idcountry;
+        this.idcountry = 1;
     }
 
     @Basic
